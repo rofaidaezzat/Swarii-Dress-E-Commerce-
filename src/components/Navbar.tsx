@@ -80,7 +80,7 @@ export default function Navbar() {
               >
                 <Avatar
                   size={"sm"}
-                  src={"https://avatars.dicebear.com/api/male/username.svg"}
+                  src={"https://ui-avatars.com/api/?name=User"}
                 />
               </MenuButton>
               <MenuList alignItems={"center"}>
@@ -88,7 +88,7 @@ export default function Navbar() {
                 <Center>
                   <Avatar
                     size={"2xl"}
-                    src={"https://avatars.dicebear.com/api/male/username.svg"}
+                    src={"https://ui-avatars.com/api/?name=User"}
                   />
                 </Center>
                 <br />

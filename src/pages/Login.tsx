@@ -16,7 +16,7 @@ import {
   FormHelperText,
 } from "@chakra-ui/react";
 import { useState } from "react";
-import axiosInstance from "../config/axios.config";
+import { supabase } from "../config/supabaseClient";
 import toast from "react-hot-toast";
 
 export default function LoginPage() {
@@ -33,8 +33,7 @@ export default function LoginPage() {
     setUser({ ...user, [name]: value });
   };
   const submitHandler = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault(); // لمنع إعادة تحميل الصفحة
-
+    e.preventDefault();
     if (!user.email && !user.password) {
       setEmail(true);
       setPassword(true);
@@ -48,16 +47,15 @@ export default function LoginPage() {
     }
     setEmail(false);
     setPassword(false);
-    console.log(user);
     try {
-      // 2-fulfilled(sucsses)optional
-      const { status, data: resData } = await axiosInstance.post(
-        "/auth/local",
-        data
-      );
-      console.log(resData);
-    } catch (error) {}
-    if (status === 200) {
+      const { data: resData, error } = await supabase.auth.signInWithPassword({
+        email: user.email,
+        password: user.password,
+      });
+      if (error) {
+        toast.error(error.message);
+        return;
+      }
       toast.success("You will navigate to the Home page after 2 seconds ", {
         position: "bottom-center",
         duration: 1500,
@@ -67,12 +65,12 @@ export default function LoginPage() {
           width: "fit-content",
         },
       });
-      //store jwt come from login in local storage
       localStorage.setItem("loggedInUser", JSON.stringify(resData));
-
       setTimeout(() => {
         location.replace("/");
       }, 2000);
+    } catch (error) {
+      toast.error("Login failed");
     }
   };
   return (

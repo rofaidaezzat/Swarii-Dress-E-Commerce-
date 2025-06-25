@@ -1,6 +1,6 @@
 import { Grid } from "@chakra-ui/react";
 import ProductCard from "../components/ProductCard";
-import useCustomQuery from "../hooks/fetchdata";
+import useSupabaseQuery from "../hooks/fetchdata";
 import { Iproduct } from "../interfaces";
 import ProductCardSkeleton from "../components/ProductCardSkeleton";
 //import { useNavigate, useParams } from "react-router-dom";
@@ -10,9 +10,9 @@ const ProductsPage = () => {
   //const { id } = useParams();
   //   const navigate = useNavigate();
   /*------------ Fetch Data ------------ */
-  const { data, isLoading } = useCustomQuery({
+  const { data, isLoading, error } = useSupabaseQuery<Iproduct>({
     queryKey: ["products"],
-    url: `/products?populate=thumbnail`,
+    table: "Products",
   });
   // ga back to product
   //const goBack = () => navigate(-1);
@@ -33,21 +33,23 @@ const ProductsPage = () => {
       </Grid>
     );
 
+  console.log("data:", data, "error:", error);
+
   /*------------ Render Products ------------ */
-  const renderProduct = data?.map((product: Iproduct) => {
-    const imageUrl = product.thumbnail?.formats?.thumbnail?.url
-      ? `http://localhost:1337${product.thumbnail.formats.thumbnail.url}`
-      : "https://via.placeholder.com/150";
-    return (
-      <ProductCard
-        key={product.id}
-        title={product.title}
-        description={product.description}
-        price={product.price}
-        URL={imageUrl}
-      />
-    );
-  });
+  const renderProduct = Array.isArray(data)
+    ? data.map((product: Iproduct) => {
+        const imageUrl = product.thumbnail || "https://via.placeholder.com/150";
+        return (
+          <ProductCard
+            key={product.id}
+            title={product.title}
+            description={product.description}
+            price={product.price}
+            URL={imageUrl}
+          />
+        );
+      })
+    : null;
 
   return (
     <Grid
