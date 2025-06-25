@@ -1,13 +1,13 @@
 import { useQuery, UseQueryResult } from "@tanstack/react-query";
 import { supabase } from "../config/supabaseClient";
 
-interface IQuery<T> {
+interface IQuery {
   queryKey: string[];
   table: string;
   select?: string;
 }
 
-const useSupabaseQuery = <T = any>({ queryKey, table, select = "*" }: IQuery<T>): UseQueryResult<T[], Error> => {
+const useSupabaseQuery = <T = any>({ queryKey, table, select = "*" }: IQuery): UseQueryResult<T[], Error> => {
   return useQuery({
     queryKey,
     queryFn: async () => {
