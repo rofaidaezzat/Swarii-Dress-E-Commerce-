@@ -18,6 +18,11 @@ import {
 } from "@chakra-ui/react";
 import { MoonIcon, SunIcon } from "@chakra-ui/icons";
 import { Link } from "react-router-dom";
+import cookieService from "../services/cookieService";
+import { jwtDecode } from "jwt-decode";
+import { useDispatch, useSelector } from "react-redux";
+import { selectcart } from "../app/features/cartSlice";
+import { onOpenCartDrawer } from "../app/features/globalSlice";
 
 const Links = [
   { name: "Dashboard", path: "/dashboard" },
@@ -43,9 +48,22 @@ const NavLink = ({ name, path }: { name: string; path: string }) => {
   );
 };
 
+interface JwtPayload {
+  email?: string;
+  sub?: string;
+  // أضف أي حقول أخرى متوقعة من التوكن
+}
+
+const storageKey = "accessToken";
+const accessToken = cookieService.get(storageKey);
+const userData = accessToken ? jwtDecode<JwtPayload>(accessToken) : null;
+
 export default function Navbar() {
   const { colorMode, toggleColorMode } = useColorMode();
 
+  const { CartProduct } = useSelector(selectcart);
+  const dispatch = useDispatch();
+  const onOpen = () => dispatch(onOpenCartDrawer());
   return (
     <Box bg={useColorModeValue("gray.100", "gray.900")} px={4}>
       <Flex h={16} alignItems={"center"} justifyContent={"space-between"}>
@@ -68,40 +86,51 @@ export default function Navbar() {
             <Button onClick={toggleColorMode}>
               {colorMode === "light" ? <MoonIcon /> : <SunIcon />}
             </Button>
-            <Link to="/login">Login</Link>
-            {/* قائمة المستخدم */}
-            <Menu>
-              <MenuButton
-                as={Button}
-                rounded={"full"}
-                variant={"link"}
-                cursor={"pointer"}
-                minW={0}
-              >
-                <Avatar
-                  size={"sm"}
-                  src={"https://ui-avatars.com/api/?name=User"}
-                />
-              </MenuButton>
-              <MenuList alignItems={"center"}>
-                <br />
-                <Center>
+            <Button onClick={onOpen}>Cart({CartProduct.length})</Button>
+            {/* قائمة المستخدم أو زر تسجيل الدخول */}
+            {userData ? (
+              <Menu>
+                <MenuButton
+                  as={Button}
+                  rounded={"full"}
+                  variant={"link"}
+                  cursor={"pointer"}
+                  minW={0}
+                >
                   <Avatar
-                    size={"2xl"}
+                    size={"sm"}
                     src={"https://ui-avatars.com/api/?name=User"}
                   />
-                </Center>
-                <br />
-                <Center>
-                  <p>Username</p>
-                </Center>
-                <br />
-                <MenuDivider />
-                <MenuItem>Your Servers</MenuItem>
-                <MenuItem>Account Settings</MenuItem>
-                <MenuItem>Logout</MenuItem>
-              </MenuList>
-            </Menu>
+                </MenuButton>
+                <MenuList alignItems={"center"}>
+                  <br />
+                  <Center>
+                    <Avatar
+                      size={"2xl"}
+                      src={"https://ui-avatars.com/api/?name=User"}
+                    />
+                  </Center>
+                  <br />
+                  <Center>
+                    <p>{userData.email || userData.sub || "User"}</p>
+                  </Center>
+                  <br />
+                  <MenuDivider />
+                  <MenuItem>Your Servers</MenuItem>
+                  <MenuItem>Account Settings</MenuItem>
+                  <MenuItem
+                    onClick={() => {
+                      cookieService.remove(storageKey);
+                      window.location.href = "/login";
+                    }}
+                  >
+                    Logout
+                  </MenuItem>
+                </MenuList>
+              </Menu>
+            ) : (
+              <Link to="/login">Login</Link>
+            )}
           </Stack>
         </Flex>
       </Flex>

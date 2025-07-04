@@ -7,7 +7,7 @@ interface IQuery {
   select?: string;
 }
 
-const useSupabaseQuery = <T = any>({ queryKey, table, select = "*" }: IQuery): UseQueryResult<T[], Error> => {
+const useSupabaseQuery = <T>({ queryKey, table, select = "*" }: IQuery): UseQueryResult<T[], Error> => {
   return useQuery({
     queryKey,
     queryFn: async () => {

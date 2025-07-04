@@ -15,9 +15,12 @@ import {
   InputRightElement,
   FormHelperText,
 } from "@chakra-ui/react";
-import { useState } from "react";
-import { supabase } from "../config/supabaseClient";
+import { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { userLogin, selectLogin } from "../app/features/loginslice";
 import toast from "react-hot-toast";
+import cookieService from "../services/cookieService";
+import { useNavigate } from "react-router-dom";
 
 export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
@@ -27,6 +30,10 @@ export default function LoginPage() {
     email: "",
     password: "",
   });
+  const dispatch = useDispatch();
+  const loginState = useSelector(selectLogin);
+  const [toastShown, setToastShown] = useState(false);
+  const navigate = useNavigate();
   /*-----------Handler----------- */
   const onChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -47,32 +54,23 @@ export default function LoginPage() {
     }
     setEmail(false);
     setPassword(false);
-    try {
-      const { data: resData, error } = await supabase.auth.signInWithPassword({
-        email: user.email,
-        password: user.password,
-      });
-      if (error) {
-        toast.error(error.message);
-        return;
-      }
-      toast.success("You will navigate to the Home page after 2 seconds ", {
-        position: "bottom-center",
-        duration: 1500,
-        style: {
-          backgroundColor: "black",
-          color: "white",
-          width: "fit-content",
-        },
-      });
-      localStorage.setItem("loggedInUser", JSON.stringify(resData));
-      setTimeout(() => {
-        location.replace("/");
-      }, 2000);
-    } catch (error) {
-      toast.error("Login failed");
-    }
+    setToastShown(false);
+    dispatch(userLogin({ email: user.email, password: user.password }) as any);
   };
+  useEffect(() => {
+    if (loginState.data && !toastShown) {
+      toast.success("Login successful!");
+      setToastShown(true);
+      console.log(cookieService.get("accessToken"));
+      navigate("/");
+      window.location.reload();
+    }
+    if (loginState.error && !toastShown) {
+      toast.error(loginState.error);
+      setToastShown(true);
+      
+    }
+  }, [loginState.data, loginState.error, toastShown, navigate]);
   return (
     <Flex
       minH={"100vh"}
@@ -118,7 +116,6 @@ export default function LoginPage() {
                   onChange={onChangeHandler}
                   name={"password"}
                 />
-
                 <InputRightElement h={"full"}>
                   <Button
                     variant={"ghost"}
@@ -153,6 +150,7 @@ export default function LoginPage() {
                   bg: email || password ? "red.300" : "blue.600",
                 }}
                 type="submit"
+                isLoading={loginState.loading}
               >
                 Sign in
               </Button>

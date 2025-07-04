@@ -3,23 +3,22 @@ import ProductCard from "../components/ProductCard";
 import useSupabaseQuery from "../hooks/fetchdata";
 import { Iproduct } from "../interfaces";
 import ProductCardSkeleton from "../components/ProductCardSkeleton";
-//import { useNavigate, useParams } from "react-router-dom";
-//import { useEffect } from "react";
+import { useParams } from "react-router-dom";
+import { useEffect } from "react";
 
 const ProductsPage = () => {
-  //const { id } = useParams();
-  //   const navigate = useNavigate();
+  const { id } = useParams();
+
   /*------------ Fetch Data ------------ */
   const { data, isLoading, error } = useSupabaseQuery<Iproduct>({
     queryKey: ["products"],
     table: "Products",
   });
-  // ga back to product
-  //const goBack = () => navigate(-1);
+
   //if i want to change title in the browser make it product store| product ${id} page
-  //   useEffect(() => {
-  //     document.title = `products store| product ${id} page`;
-  //   }, []);
+  useEffect(() => {
+    document.title = `products store| product ${id} page`;
+  }, []);
   if (isLoading)
     return (
       <Grid
@@ -46,6 +45,7 @@ const ProductsPage = () => {
             description={product.description}
             price={product.price}
             URL={imageUrl}
+            id={product.id}
           />
         );
       })
