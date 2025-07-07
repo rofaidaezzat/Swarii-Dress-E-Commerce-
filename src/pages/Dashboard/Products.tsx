@@ -1,7 +1,12 @@
 import React from "react";
+import TableProduct from "./components/TableProduct";
 
 const Products = () => {
-  return <div>Products</div>;
+  return (
+    <div>
+      <TableProduct />
+    </div>
+  );
 };
 
 export default Products;

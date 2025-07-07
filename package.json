@@ -10,6 +10,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@ark-ui/react": "^5.16.1",
     "@chakra-ui/icons": "^2.2.4",
     "@chakra-ui/react": "^2.10.7",
     "@emotion/react": "^11.14.0",

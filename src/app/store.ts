@@ -4,6 +4,7 @@ import cartSlice from './features/cartSlice';
 import globalSlice from './features/globalSlice';
 import {persistReducer,persistStore} from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
+import { ProductApiSlice } from './services/crudDresses';
 
 
 const persistCartConfig = {
@@ -16,7 +17,8 @@ export const store = configureStore({
     reducer: {
         login:loginSlice,
         cart:persistedCart,
-        global:globalSlice
+        global:globalSlice,
+        [ProductApiSlice.reducerPath]:ProductApiSlice.reducer,
 
     }, 
     middleware: (getDefaultMiddleware) => 
@@ -24,7 +26,7 @@ export const store = configureStore({
             serializableCheck: false,
         })
         .concat(
-            
+            ProductApiSlice.middleware
         )
 })
 
