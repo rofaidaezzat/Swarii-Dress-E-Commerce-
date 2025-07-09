@@ -15,6 +15,7 @@ import {
   useColorMode,
   Center,
   HStack,
+  Image,
 } from "@chakra-ui/react";
 import { MoonIcon, SunIcon } from "@chakra-ui/icons";
 import { Link } from "react-router-dom";
@@ -27,7 +28,6 @@ import { onOpenCartDrawer } from "../app/features/globalSlice";
 const Links = [
   { name: "Dashboard", path: "/dashboard" },
   { name: "Products", path: "/products" },
-  { name: "Team", path: "/team" },
 ];
 
 const NavLink = ({ name, path }: { name: string; path: string }) => {
@@ -71,7 +71,14 @@ export default function Navbar() {
 
         {/* الروابط */}
         <HStack spacing={8} alignItems={"center"}>
-          <Link to="/">My App</Link>
+          <Link to="/">
+            <Image
+              src="/public/logo.png"
+              alt="logo.png"
+              w={"100px"}
+              h={"80px"}
+            />
+          </Link>
           <HStack as={"nav"} spacing={4} display={{ base: "none", md: "flex" }}>
             {Links.map((link) => (
               <NavLink key={link.name} name={link.name} path={link.path} />

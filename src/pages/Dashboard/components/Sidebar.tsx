@@ -22,6 +22,7 @@ import {
   MenuItem,
   MenuList,
   Link,
+  Image,
 } from "@chakra-ui/react";
 import { FiHome, FiMenu, FiBell, FiChevronDown, FiGrid } from "react-icons/fi";
 import { IconType } from "react-icons";
@@ -65,9 +66,17 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
       {...rest}
     >
       <Flex h="20" alignItems="center" mx="8" justifyContent="space-between">
-        <Text fontSize="2xl" fontFamily="monospace" fontWeight="bold">
-          Logo
-        </Text>
+        <Link as={RouterLink} to="/" style={{ textDecoration: "none" }}>
+          <Link as={RouterLink} to="/">
+            <Image
+              src="/public/logo.png"
+              alt="logo.png"
+              w={"130px"}
+              h={"100px"}
+            />
+          </Link>
+        </Link>
+
         <CloseButton display={{ base: "flex", md: "none" }} onClick={onClose} />
       </Flex>
       {LinkItems.map((link) => (
@@ -136,15 +145,6 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
         aria-label="open menu"
         icon={<FiMenu />}
       />
-
-      <Text
-        display={{ base: "flex", md: "none" }}
-        fontSize="2xl"
-        fontFamily="monospace"
-        fontWeight="bold"
-      >
-        Logo
-      </Text>
 
       <HStack spacing={{ base: "0", md: "6" }}>
         <IconButton

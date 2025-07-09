@@ -1,5 +1,12 @@
-import { Button, Divider, Flex, Image, Stack, Text } from "@chakra-ui/react";
-
+import {
+  Button,
+  Divider,
+  Flex,
+  Image,
+  Text,
+  Box,
+  useColorModeValue,
+} from "@chakra-ui/react";
 import { useDispatch } from "react-redux";
 import { removefromcart } from "../app/features/cartSlice";
 
@@ -10,46 +17,60 @@ interface Iprops {
   quantity: number;
   price: number;
 }
+
 const CartDrawerItem = ({ id, thumbnail, title, quantity, price }: Iprops) => {
   const dispatch = useDispatch();
-
   const removeitem = () => {
     dispatch(removefromcart(id));
   };
+
+  const bg = useColorModeValue("gray.50", "gray.700");
+  const borderColor = useColorModeValue("gray.200", "gray.600");
+  const textColor = useColorModeValue("gray.800", "gray.200");
+
   return (
     <>
       <Flex
-        alignItems="center"
+        align="center"
+        justify="space-between"
+        p={3}
         mb={3}
-        py={2}
-        border={"1px solid white"}
-        key={id}
+        bg={bg}
+        border="1px solid"
+        borderColor={borderColor}
+        rounded="md"
+        boxShadow="sm"
       >
         <Image
           src={thumbnail}
           alt={title}
-          w={"60px"}
-          h={"60px"}
-          rounded={"full"}
-          objectFit={"cover"}
-          mr={5}
+          boxSize="60px"
+          objectFit="cover"
+          rounded="md"
+          mr={3}
+          w="60px"
+          h="60px"
         />
-        <Stack>
-          <Text fontSize={"sm"}>title: {title}</Text>
-          <Text fontSize={"sm"} ml={3}>
-            Price :${price}
+        <Box flex="1">
+          <Text fontSize="sm" fontWeight="bold" color={textColor} noOfLines={1}>
+            {title}
           </Text>
-          <Text fontSize={"sm"}>Quantity :{quantity}</Text>
-          <Button
-            size={"xs"}
-            w="full"
-            variant={"outline"}
-            colorScheme={"red"}
-            onClick={removeitem}
-          >
-            Remove
-          </Button>
-        </Stack>
+          <Text fontSize="sm" color="gray.500">
+            Price: ${price}
+          </Text>
+          <Text fontSize="sm" color="gray.500">
+            Quantity: {quantity}
+          </Text>
+        </Box>
+        <Button
+          size="xs"
+          variant="outline"
+          colorScheme="red"
+          onClick={removeitem}
+          ml={3}
+        >
+          Remove
+        </Button>
       </Flex>
       <Divider />
     </>

@@ -1,14 +1,8 @@
 import React from "react";
 import SidebarWithHeader from "./components/Sidebar";
-import { Outlet } from "react-router-dom";
 
 const DashboardLayout = () => {
-  return (
-    <>
-      <SidebarWithHeader />
-      <Outlet />
-    </>
-  );
+  return <SidebarWithHeader />;
 };
 
 export default DashboardLayout;
