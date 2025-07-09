@@ -11,7 +11,7 @@ import { useDispatch } from "react-redux";
 import { removefromcart } from "../app/features/cartSlice";
 
 interface Iprops {
-  id: number;
+  id: string | number;
   thumbnail: string;
   title: string;
   quantity: number;

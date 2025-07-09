@@ -13,18 +13,33 @@ import {
   VStack,
   Divider,
 } from "@chakra-ui/react";
-import { FiBox, FiUsers, FiShoppingCart, FiPlus, FiBarChart2, FiUserPlus, FiBell } from "react-icons/fi";
+import {
+  FiBox,
+  FiUsers,
+  FiShoppingCart,
+  FiPlus,
+  FiBarChart2,
+  FiUserPlus,
+  FiBell,
+} from "react-icons/fi";
 
 const Dashboard = () => {
   const bg = useColorModeValue("gray.50", "#181a20");
   const cardBg = useColorModeValue("white", "#23263a");
   const textMuted = useColorModeValue("gray.600", "gray.400");
+  const text = useColorModeValue("gray.50", "gray.800");
+  const tex = useColorModeValue("gray.100", "gray.700");
 
   return (
     <Box bg={bg} minH="100vh" p={[4, 8]}>
       {/* Header */}
       <Box mb={8} textAlign={{ base: "center", md: "left" }}>
-        <Text fontSize="3xl" fontWeight="bold" color="teal.300" letterSpacing="tight">
+        <Text
+          fontSize="3xl"
+          fontWeight="bold"
+          color="teal.300"
+          letterSpacing="tight"
+        >
           🛍️ Admin Dashboard - E-Commerce
         </Text>
         <Text mt={2} color={textMuted} fontSize="lg">
@@ -53,7 +68,10 @@ const Dashboard = () => {
         />
         <Box textAlign={{ base: "center", sm: "left" }}>
           <Text fontSize="xl" fontWeight="bold">
-            Welcome, Justina Clark <span role="img" aria-label="wave">👋</span>
+            Welcome, Justina Clark{" "}
+            <span role="img" aria-label="wave">
+              👋
+            </span>
           </Text>
           <Text fontSize="sm">You are logged in as Admin</Text>
         </Box>
@@ -88,17 +106,35 @@ const Dashboard = () => {
         </Text>
         <HStack spacing={4} flexWrap="wrap">
           <Tooltip label="Add a new product" hasArrow>
-            <Button leftIcon={<FiPlus />} colorScheme="teal" variant="solid" size="lg" boxShadow="md">
+            <Button
+              leftIcon={<FiPlus />}
+              colorScheme="teal"
+              variant="solid"
+              size="lg"
+              boxShadow="md"
+            >
               Add Product
             </Button>
           </Tooltip>
           <Tooltip label="View sales reports" hasArrow>
-            <Button leftIcon={<FiBarChart2 />} colorScheme="blue" variant="outline" size="lg" boxShadow="md">
+            <Button
+              leftIcon={<FiBarChart2 />}
+              colorScheme="blue"
+              variant="outline"
+              size="lg"
+              boxShadow="md"
+            >
               View Reports
             </Button>
           </Tooltip>
           <Tooltip label="Add a new user" hasArrow>
-            <Button leftIcon={<FiUserPlus />} colorScheme="purple" variant="outline" size="lg" boxShadow="md">
+            <Button
+              leftIcon={<FiUserPlus />}
+              colorScheme="purple"
+              variant="outline"
+              size="lg"
+              boxShadow="md"
+            >
               Add User
             </Button>
           </Tooltip>
@@ -139,9 +175,9 @@ const Dashboard = () => {
               key={order.id}
               p={4}
               align="center"
-              _hover={{ bg: useColorModeValue("gray.50", "gray.800") }}
+              _hover={{ bg: { text } }}
               borderTop="1px solid"
-              borderColor={useColorModeValue("gray.100", "gray.700")}
+              borderColor={tex}
               fontSize="md"
             >
               <Box flex="1">{order.id}</Box>
@@ -149,7 +185,9 @@ const Dashboard = () => {
               <Box flex="1">{order.total}</Box>
               <Box flex="1">
                 <Badge
-                  colorScheme={order.status === "Completed" ? "green" : "yellow"}
+                  colorScheme={
+                    order.status === "Completed" ? "green" : "yellow"
+                  }
                   variant={order.status === "Completed" ? "solid" : "subtle"}
                   fontSize="0.9em"
                   px={3}
@@ -170,10 +208,30 @@ const Dashboard = () => {
           <Icon as={FiBell} mr={2} /> Recent Activity
         </Text>
         <Box bg={cardBg} borderRadius="lg" boxShadow="md" p={6}>
-          <VStack align="stretch" spacing={4} divider={<Divider borderColor={useColorModeValue('gray.100', 'gray.700')} />}>
-            <ActivityItem user="Justina Clark" action="added a new product" time="2 mins ago" />
-            <ActivityItem user="Sarah" action="updated an order status" time="10 mins ago" />
-            <ActivityItem user="Mohamed" action="created a new user account" time="1 hour ago" />
+          <VStack
+            align="stretch"
+            spacing={4}
+            divider={
+              <Divider
+                borderColor={useColorModeValue("gray.100", "gray.700")}
+              />
+            }
+          >
+            <ActivityItem
+              user="Justina Clark"
+              action="added a new product"
+              time="2 mins ago"
+            />
+            <ActivityItem
+              user="Sarah"
+              action="updated an order status"
+              time="10 mins ago"
+            />
+            <ActivityItem
+              user="Mohamed"
+              action="created a new user account"
+              time="1 hour ago"
+            />
           </VStack>
         </Box>
       </Box>
@@ -223,13 +281,27 @@ const StatCard = ({
   );
 };
 
-const ActivityItem = ({ user, action, time }: { user: string; action: string; time: string }) => (
+const ActivityItem = ({
+  user,
+  action,
+  time,
+}: {
+  user: string;
+  action: string;
+  time: string;
+}) => (
   <Flex align="center" justify="space-between">
     <Box>
-      <Text as="span" fontWeight="bold" color="teal.400">{user}</Text>{" "}
-      <Text as="span" color="gray.300">{action}</Text>
+      <Text as="span" fontWeight="bold" color="teal.400">
+        {user}
+      </Text>{" "}
+      <Text as="span" color="gray.300">
+        {action}
+      </Text>
     </Box>
-    <Text color="gray.500" fontSize="sm">{time}</Text>
+    <Text color="gray.500" fontSize="sm">
+      {time}
+    </Text>
   </Flex>
 );
 

@@ -59,7 +59,7 @@ const ProductCard = ({
           {showAddToCart ? (
             <Button
               bg={colorMode === "light" ? "#e6f3fd" : "#9f7aea"}
-              color={colorMode !== "light" ? "#e6f3fd" : "#9f7aea"}
+              bgGradient="linear(to-r, teal.500, blue.500)"
               size={"xl"}
               variant="outline"
               border={"none"}
@@ -82,7 +82,7 @@ const ProductCard = ({
               as={RouterLink}
               to={id ? `/products/${id}` : "#"}
               bg={colorMode === "light" ? "#e6f3fd" : "#9f7aea"}
-              color={colorMode !== "light" ? "#e6f3fd" : "#9f7aea"}
+              bgGradient="linear(to-r, teal.500, blue.500)"
               size={"xl"}
               variant="outline"
               border={"none"}
@@ -90,7 +90,7 @@ const ProductCard = ({
               overflow={"hidden"}
               w={"full"}
               _hover={{
-                bg: colorMode !== "light" ? "#e6f3fd" : "#9f7aea",
+                // bg: colorMode !== "light" ? "#e6f3fd" : "#9f7aea",
                 color: colorMode === "light" ? "white" : "#9f7aea",
                 border: "transparent",
               }}
