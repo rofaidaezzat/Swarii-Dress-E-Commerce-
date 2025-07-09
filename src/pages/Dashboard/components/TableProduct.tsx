@@ -20,7 +20,7 @@ import {
   FormHelperText,
   useColorModeValue,
 } from "@chakra-ui/react";
-import React, { useState } from "react";
+import { useState } from "react";
 import { Pencil, Trash } from "lucide-react";
 import {
   useGetDashboardProductQuery,
@@ -42,7 +42,7 @@ const TableProduct = () => {
   const [formData, setFormData] = useState<Iproduct | null>(null);
 
   const { data, error, isLoading } = useGetDashboardProductQuery();
-  const [updateProduct, { isLoading: isUpdating, error: updateError }] =
+  const [updateProduct, { isLoading: isUpdating }] =
     useUpdateDashboardProductMutation();
 
   if (isLoading) return <TableProductSkeleton />;

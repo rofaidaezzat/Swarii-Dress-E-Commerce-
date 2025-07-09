@@ -11,7 +11,6 @@ import {
   useColorModeValue,
   HStack,
 } from "@chakra-ui/react";
-import React from "react";
 
 const TableProductSkeleton = () => {
   const rows = new Array(5).fill(0); // 5 صفوف مؤقتة
