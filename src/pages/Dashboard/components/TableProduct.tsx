@@ -24,6 +24,7 @@ import {
 import { useState } from "react";
 import { Pencil, Trash } from "lucide-react";
 import {
+  useCreateDashboardProductMutation,
   useGetDashboardProductQuery,
   useUpdateDashboardProductMutation,
 } from "../../../app/services/crudDresses";
@@ -39,19 +40,38 @@ const TableProduct = () => {
   const Bg = useColorModeValue("teal.100", "teal.900");
   const [isOpen, setIsOpen] = useState(false);
   const [isUpdateOpen, setIsUpdateOpen] = useState(false);
+  const [isCreateOpen, setIsCreateOpen] = useState(false);
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [formData, setFormData] = useState<Iproduct | null>(null);
 
   const { data, error, isLoading } = useGetDashboardProductQuery();
   const [updateProduct, { isLoading: isUpdating }] =
     useUpdateDashboardProductMutation();
-
+  const [createProduct, { isLoading: isCreating }] =
+    useCreateDashboardProductMutation();
   if (isLoading) return <TableProductSkeleton />;
   if (error) return <p>Error loading products</p>;
 
   return (
     <>
       <Box w="100%" overflowX={{ base: "auto", md: "visible" }}>
+        <Button
+          colorScheme="teal"
+          mb={4}
+          onClick={() => {
+            setIsCreateOpen(true);
+            setFormData({
+              id: "",
+              title: "",
+              description: "",
+              price: 0,
+              thumbnail: "",
+            });
+          }}
+        >
+          + Create Product
+        </Button>
+
         <Table
           size="md"
           variant="simple"
@@ -135,7 +155,7 @@ const TableProduct = () => {
           </Tbody>
         </Table>
       </Box>
-
+      {/* ---------------------delete---------------- */}
       {isOpen && selectedId && (
         <DeleteDialog
           isOpen={isOpen}
@@ -143,7 +163,7 @@ const TableProduct = () => {
           productId={selectedId}
         />
       )}
-
+      {/* --------------------update------------------ */}
       {isUpdateOpen && formData && (
         <UpdateModal
           isOpen={isUpdateOpen}
@@ -240,6 +260,103 @@ const TableProduct = () => {
               }}
             >
               Update
+            </Button>
+          </FormControl>
+        </UpdateModal>
+      )}
+      {/* ---------------------Create---------------- */}
+      {isCreateOpen && formData && (
+        <UpdateModal
+          isOpen={isCreateOpen}
+          onClose={() => setIsCreateOpen(false)}
+          title="Create Product"
+          txtOk="Create"
+          txtcancel="Cancel"
+        >
+          <FormControl>
+            <FormLabel>Title</FormLabel>
+            <Input
+              value={formData.title}
+              onChange={(e) =>
+                setFormData({ ...formData, title: e.target.value })
+              }
+            />
+            <FormHelperText>Product title</FormHelperText>
+
+            <FormLabel>Description</FormLabel>
+            <Input
+              value={formData.description}
+              onChange={(e) =>
+                setFormData({ ...formData, description: e.target.value })
+              }
+            />
+            <FormHelperText>Product description</FormHelperText>
+
+            <FormLabel>Thumbnail</FormLabel>
+            <Input
+              type="file"
+              accept="image/*"
+              onChange={(e) => {
+                const file = e.target.files?.[0];
+                if (!file) return;
+
+                const reader = new FileReader();
+                reader.onloadend = () => {
+                  setFormData((prev) => ({
+                    ...prev!,
+                    thumbnail: reader.result as string,
+                  }));
+                };
+                reader.readAsDataURL(file);
+              }}
+            />
+
+            {formData.thumbnail && (
+              <Image
+                src={formData.thumbnail}
+                alt="Preview"
+                boxSize="100px"
+                mt={2}
+                objectFit="cover"
+                borderRadius="md"
+              />
+            )}
+            <FormHelperText>Upload product thumbnail</FormHelperText>
+
+            <FormLabel>Price</FormLabel>
+            <NumberInput
+              min={0}
+              value={formData.price}
+              onChange={(valueString) =>
+                setFormData({ ...formData, price: Number(valueString) })
+              }
+            >
+              <NumberInputField />
+              <NumberInputStepper>
+                <NumberIncrementStepper />
+                <NumberDecrementStepper />
+              </NumberInputStepper>
+            </NumberInput>
+
+            <Button
+              mt={4}
+              colorScheme="green"
+              isLoading={isCreating}
+              onClick={async () => {
+                if (formData) {
+                  await createProduct({
+                    body: {
+                      title: formData.title,
+                      description: formData.description,
+                      thumbnail: formData.thumbnail,
+                      price: formData.price,
+                    },
+                  });
+                  setIsCreateOpen(false);
+                }
+              }}
+            >
+              Create
             </Button>
           </FormControl>
         </UpdateModal>

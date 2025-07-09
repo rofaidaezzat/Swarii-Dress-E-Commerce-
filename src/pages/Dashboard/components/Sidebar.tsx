@@ -64,11 +64,14 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
       h="full"
       {...rest}
     >
-      <Flex h="20" alignItems="center" mx="8" justifyContent="space-between">
+      <Flex h={{ base: "20", md: "12" }} alignItems="center" mx="8" justifyContent="space-between">
         <Link as={RouterLink} to="/" style={{ textDecoration: "none" }}>
-          <Link as={RouterLink} to="/">
-            <Image src="/logo.png" alt="logo.png" w={"130px"} h={"100px"} />
-          </Link>
+          <Image
+            src="/logo.png"
+            alt="logo.png"
+            w={"130px"}
+            h={"100px"}
+          />
         </Link>
 
         <CloseButton display={{ base: "flex", md: "none" }} onClick={onClose} />
