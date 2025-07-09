@@ -73,7 +73,7 @@ export default function Navbar() {
         <HStack spacing={8} alignItems={"center"}>
           <Link to="/">
             <Image
-              src="/public/logo.png"
+              src="/logo.png"
               alt="logo.png"
               w={"100px"}
               h={"80px"}

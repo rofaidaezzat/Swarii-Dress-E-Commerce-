@@ -69,7 +69,7 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
         <Link as={RouterLink} to="/" style={{ textDecoration: "none" }}>
           <Link as={RouterLink} to="/">
             <Image
-              src="/public/logo.png"
+              src="/logo.png"
               alt="logo.png"
               w={"130px"}
               h={"100px"}
