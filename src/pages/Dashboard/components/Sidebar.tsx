@@ -67,12 +67,7 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
       <Flex h="20" alignItems="center" mx="8" justifyContent="space-between">
         <Link as={RouterLink} to="/" style={{ textDecoration: "none" }}>
           <Link as={RouterLink} to="/">
-            <Image
-              src="/logo.png"
-              alt="logo.png"
-              w={"130px"}
-              h={"100px"}
-            />
+            <Image src="/logo.png" alt="logo.png" w={"130px"} h={"100px"} />
           </Link>
         </Link>
 

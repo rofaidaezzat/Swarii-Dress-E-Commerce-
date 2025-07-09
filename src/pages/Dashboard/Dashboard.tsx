@@ -31,18 +31,18 @@ const Dashboard = () => {
   const tex = useColorModeValue("gray.100", "gray.700");
 
   return (
-    <Box bg={bg} minH="100vh" p={[4, 8]}>
+    <Box bg={bg} minH="100vh" p={[2, 4]}>
       {/* Header */}
-      <Box mb={8} textAlign={{ base: "center", md: "left" }}>
+      <Box mb={4} mt={2} textAlign={{ base: "center", md: "left" }}>
         <Text
-          fontSize="3xl"
+          fontSize="2xl"
           fontWeight="bold"
           color="teal.300"
           letterSpacing="tight"
         >
           🛍️ Admin Dashboard - E-Commerce
         </Text>
-        <Text mt={2} color={textMuted} fontSize="lg">
+        <Text mt={1} color={textMuted} fontSize="md">
           Manage your products, users, and orders all in one place.
         </Text>
       </Box>
