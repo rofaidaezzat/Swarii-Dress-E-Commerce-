@@ -16,8 +16,15 @@ import {
   Center,
   HStack,
   Image,
+  IconButton,
+  Drawer,
+  DrawerBody,
+  DrawerOverlay,
+  DrawerContent,
+  DrawerCloseButton,
+  useDisclosure,
 } from "@chakra-ui/react";
-import { MoonIcon, SunIcon } from "@chakra-ui/icons";
+import { MoonIcon, SunIcon, HamburgerIcon } from "@chakra-ui/icons";
 import { Link } from "react-router-dom";
 import cookieService from "../services/cookieService";
 import { jwtDecode } from "jwt-decode";
@@ -60,16 +67,15 @@ const userData = accessToken ? jwtDecode<JwtPayload>(accessToken) : null;
 
 export default function Navbar() {
   const { colorMode, toggleColorMode } = useColorMode();
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
   const { CartProduct } = useSelector(selectcart);
   const dispatch = useDispatch();
-  const onOpen = () => dispatch(onOpenCartDrawer());
+  const onOpenCart = () => dispatch(onOpenCartDrawer());
   return (
     <Box bg={useColorModeValue("gray.100", "gray.900")} px={4}>
       <Flex h={16} alignItems={"center"} justifyContent={"space-between"}>
         {/* شعار الموقع */}
-
-        {/* الروابط */}
         <HStack spacing={8} alignItems={"center"}>
           <Link to="/">
             <Image
@@ -79,6 +85,16 @@ export default function Navbar() {
               h={"80px"}
             />
           </Link>
+          {/* زر القائمة للجوال */}
+          <IconButton
+            aria-label="Open menu"
+            icon={<HamburgerIcon />}
+            display={{ base: "flex", md: "none" }}
+            onClick={onOpen}
+            variant="outline"
+            size="md"
+          />
+          {/* روابط الداشبورد تظهر فقط في الشاشات الكبيرة */}
           <HStack as={"nav"} spacing={4} display={{ base: "none", md: "flex" }}>
             {Links.map((link) => (
               <NavLink key={link.name} name={link.name} path={link.path} />
@@ -93,7 +109,7 @@ export default function Navbar() {
             <Button onClick={toggleColorMode}>
               {colorMode === "light" ? <MoonIcon /> : <SunIcon />}
             </Button>
-            <Button onClick={onOpen}>Cart({CartProduct.length})</Button>
+            <Button onClick={onOpenCart}>Cart({CartProduct.length})</Button>
             {/* قائمة المستخدم أو زر تسجيل الدخول */}
             {userData ? (
               <Menu>
@@ -141,6 +157,20 @@ export default function Navbar() {
           </Stack>
         </Flex>
       </Flex>
+      {/* Drawer للروابط في الجوال */}
+      <Drawer placement="left" onClose={onClose} isOpen={isOpen}>
+        <DrawerOverlay />
+        <DrawerContent>
+          <DrawerCloseButton />
+          <DrawerBody mt={10}>
+            <Stack spacing={4}>
+              {Links.map((link) => (
+                <NavLink key={link.name} name={link.name} path={link.path} />
+              ))}
+            </Stack>
+          </DrawerBody>
+        </DrawerContent>
+      </Drawer>
     </Box>
   );
 }

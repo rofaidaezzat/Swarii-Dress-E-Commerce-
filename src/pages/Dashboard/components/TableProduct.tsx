@@ -19,6 +19,7 @@ import {
   Button,
   FormHelperText,
   useColorModeValue,
+  Box,
 } from "@chakra-ui/react";
 import { useState } from "react";
 import { Pencil, Trash } from "lucide-react";
@@ -50,88 +51,90 @@ const TableProduct = () => {
 
   return (
     <>
-      <Table
-        size="md"
-        variant="simple"
-        colorScheme="teal"
-        bg={bg}
-        boxShadow="lg"
-        borderRadius="lg"
-        overflow="hidden"
-      >
-        <Thead bg={Bg}>
-          <Tr>
-            <Th fontSize="sm">Id</Th>
-            <Th fontSize="sm">Thumbnail</Th>
-            <Th fontSize="sm">Title</Th>
-            <Th fontSize="sm">Description</Th>
-            <Th fontSize="sm" isNumeric>
-              Price
-            </Th>
-            <Th fontSize="sm">Actions</Th>
-          </Tr>
-        </Thead>
-        <Tbody>
-          {data?.map((product: Iproduct) => (
-            <Tr
-              key={product.id}
-              _hover={{
-                bg: { hoverBg },
-                transition: "0.2s",
-              }}
-            >
-              <Td fontSize="sm" fontWeight="medium">
-                {product.id}
-              </Td>
-              <Td>
-                <Image
-                  src={product.thumbnail}
-                  alt={product.title}
-                  boxSize="45px"
-                  objectFit="cover"
-                  borderRadius="md"
-                  border="1px solid"
-                  borderColor="gray.200"
-                />
-              </Td>
-              <Td fontSize="sm">{product.title}</Td>
-              <Td fontSize="sm" maxW="250px" isTruncated>
-                {product.description}
-              </Td>
-              <Td fontSize="sm" isNumeric>
-                {product.price} EGP
-              </Td>
-              <Td>
-                <HStack spacing={1}>
-                  <IconButton
-                    aria-label="Edit"
-                    icon={<Pencil size={16} />}
-                    variant="solid"
-                    size="sm"
-                    colorScheme="blue"
-                    onClick={() => {
-                      setSelectedId(product.id);
-                      setFormData(product);
-                      setIsUpdateOpen(true);
-                    }}
-                  />
-                  <IconButton
-                    aria-label="Delete"
-                    icon={<Trash size={16} />}
-                    variant="solid"
-                    size="sm"
-                    colorScheme="red"
-                    onClick={() => {
-                      setSelectedId(product.id);
-                      setIsOpen(true);
-                    }}
-                  />
-                </HStack>
-              </Td>
+      <Box w="100%" overflowX={{ base: "auto", md: "visible" }}>
+        <Table
+          size="md"
+          variant="simple"
+          colorScheme="teal"
+          bg={bg}
+          boxShadow="lg"
+          borderRadius="lg"
+          overflow="hidden"
+        >
+          <Thead bg={Bg}>
+            <Tr>
+              <Th fontSize="sm">Id</Th>
+              <Th fontSize="sm">Thumbnail</Th>
+              <Th fontSize="sm">Title</Th>
+              <Th fontSize="sm">Description</Th>
+              <Th fontSize="sm" isNumeric>
+                Price
+              </Th>
+              <Th fontSize="sm">Actions</Th>
             </Tr>
-          ))}
-        </Tbody>
-      </Table>
+          </Thead>
+          <Tbody>
+            {data?.map((product: Iproduct) => (
+              <Tr
+                key={product.id}
+                _hover={{
+                  bg: { hoverBg },
+                  transition: "0.2s",
+                }}
+              >
+                <Td fontSize="sm" fontWeight="medium">
+                  {product.id}
+                </Td>
+                <Td>
+                  <Image
+                    src={product.thumbnail}
+                    alt={product.title}
+                    boxSize="45px"
+                    objectFit="cover"
+                    borderRadius="md"
+                    border="1px solid"
+                    borderColor="gray.200"
+                  />
+                </Td>
+                <Td fontSize="sm">{product.title}</Td>
+                <Td fontSize="sm" maxW="250px" isTruncated>
+                  {product.description}
+                </Td>
+                <Td fontSize="sm" isNumeric>
+                  {product.price} EGP
+                </Td>
+                <Td>
+                  <HStack spacing={1}>
+                    <IconButton
+                      aria-label="Edit"
+                      icon={<Pencil size={16} />}
+                      variant="solid"
+                      size="sm"
+                      colorScheme="blue"
+                      onClick={() => {
+                        setSelectedId(product.id);
+                        setFormData(product);
+                        setIsUpdateOpen(true);
+                      }}
+                    />
+                    <IconButton
+                      aria-label="Delete"
+                      icon={<Trash size={16} />}
+                      variant="solid"
+                      size="sm"
+                      colorScheme="red"
+                      onClick={() => {
+                        setSelectedId(product.id);
+                        setIsOpen(true);
+                      }}
+                    />
+                  </HStack>
+                </Td>
+              </Tr>
+            ))}
+          </Tbody>
+        </Table>
+      </Box>
 
       {isOpen && selectedId && (
         <DeleteDialog
